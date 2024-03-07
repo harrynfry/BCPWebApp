@@ -1,0 +1,35 @@
+.card {
+  border: 1px solid #541963;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 16px;
+  background-color: #fff;
+  box-shadow: 0 12px 14px rgba(118, 22, 156, 0.1);
+}
+
+.card h2 {
+  margin-top: 0;
+}
+
+.card a {
+  text-decoration: none;
+  color: #154bee;
+}
+
+.card a:hover {
+  text-decoration: underline;
+}
+
+h1{
+  color: #380e43;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  gap: 10px;
+  padding: 10px;
+}
+
+.feed-container{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax (300px, 1fr));
+  gap: 10px;
+  padding: 10px;
+}
