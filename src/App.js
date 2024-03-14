@@ -5,6 +5,7 @@ import jsonData from './JSON_dumps/Scrape_2024-03-06_14-08-00.json';
 import Feed from './components/Feed';
 import Header from './components/Header';
 import Upload from './components/Upload';
+import DataDisplay from './components/DataDisplay';
 
 function App() {
 
@@ -32,6 +33,7 @@ function App() {
     <div className="App">
       <Upload data = {data}/>
       <Header/>
+      <DataDisplay/>
       <Feed data = {data}/>
     </div>
   );

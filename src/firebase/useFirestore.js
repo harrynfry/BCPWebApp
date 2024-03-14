@@ -1,4 +1,4 @@
-import { getFirestore, collection, addDoc, getDocs, query, where, doc, writeBatch, getDoc, runTransaction, setDoc } from "firebase/firestore";
+import { getFirestore, collection, addDoc, getDocs, query, where, setDoc } from "firebase/firestore";
 // contains all firestore functions
 function useFirestore(){
 
