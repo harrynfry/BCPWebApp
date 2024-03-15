@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import useFirestore from "../firebase/useFirestore";
+import Button from '@mui/material/Button';
+
 
 function FeedItem({ item }) {
 
@@ -37,6 +39,7 @@ function FeedItem({ item }) {
     }
   };
 
+  const sentiment = ["Strongly against", "Somewhat against", "Neutral", "Somewhat for", "Strongly for"]
   
   return (
     // div containing a link, description, datetime info and ID. Will detect once the link has been clicked
@@ -54,7 +57,7 @@ function FeedItem({ item }) {
           <form onSubmit={handleSubmit}>
             <fieldset>
               <legend>Rate this content (1 being negative, 5 being positive):</legend>
-              {[1, 2, 3, 4, 5].map((value) => (
+              {sentiment.map((value) => (
                 <label key={value}>
                   <input
                     type="radio"
@@ -68,7 +71,7 @@ function FeedItem({ item }) {
               ))}
               <legend>Leave your feedback:</legend>
               <textarea value={comment} onChange={handleCommentChange} style={{ width: "100%", height: "100%" }}/>
-              <button type="submit">Submit Rating and Feedback</button>
+              <Button variant="contained" type="submit">Submit Rating and Feedback</Button>
             </fieldset>
           </form>
         </div>

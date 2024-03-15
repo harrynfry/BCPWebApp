@@ -1,5 +1,6 @@
-import React from "react";
+import * as React from "react";
 import useFirestore from "../firebase/useFirestore";
+import Button from '@mui/material/Button';
 
 function Upload({ data }) {
   
@@ -21,7 +22,7 @@ function Upload({ data }) {
   return (
     // button with click handler
     <div>
-      <button onClick={clickHandler}>Upload</button>
+      <Button variant="contained" onClick={clickHandler}>Upload</Button>
     </div>
   );
 }
