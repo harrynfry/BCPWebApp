@@ -66,6 +66,48 @@ function useFirestore(){
       }
     }
 
-    return {uploadArticles, addFeedback};
+    async function findFeedback(data){
+
+      try{
+        const articleQuery = query(collection(db, "articles"), where ("id", "==", data.articleID));
+        const articleQuerySnapshot = await getDocs(articleQuery);
+
+        if (articleQuerySnapshot.empty) {
+          console.error("No article found with ID: ", data.articleID);
+          return [];
+        }
+        // get 1st doc in query
+        const articleDocRef = articleQuerySnapshot.docs[0].ref;
+        console.log("Found the article");
+
+        // Check if "feedback" collection exists
+        const feedbackCollRef = collection(articleDocRef, "feedback");
+        const feedbackCollSnapshot = await getDocs(feedbackCollRef);
+        
+        if (feedbackCollSnapshot.empty){
+          console.log("Feedback for article is empty: ", data.id);
+          return [];
+        }
+        
+        const feedbackList = []; // Array to hold feedback objects
+
+        feedbackCollSnapshot.forEach(doc => {
+            const feedbackData = doc.data();
+            const feedbackObj = {
+                id: doc.id,
+                rating: feedbackData.rating,
+                comment: feedbackData.comment
+            };
+            feedbackList.push(feedbackObj);
+        });
+
+        return feedbackList; // Return the array of feedback objects
+    } catch (error) {
+        console.error("Error getting feedback: ", error);
+        return [];
+    }
+    }
+
+    return {uploadArticles, addFeedback, findFeedback};
 }
 export default useFirestore;

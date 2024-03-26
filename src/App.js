@@ -9,13 +9,6 @@ import DataDisplay from './components/DataDisplay';
 
 function App() {
 
-
-  const [data, setData] = useState([]);
-
-  useEffect(() => {
-    setData(jsonData);
-  }, []);
-
   const app = React.useRef(null);
 
   const firebaseConfig = {
@@ -29,6 +22,12 @@ function App() {
   };
   
   if(!app.current) app.current = initializeApp(firebaseConfig);
+
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    setData(jsonData);
+  }, []);
 
   return (
     <div className="App">

@@ -6,6 +6,7 @@ function Feed({ data }) {
         {data.map((item, index) => (
           <FeedItem key={index} item={item} />
         ))}
+        
       </div>
     );
   }

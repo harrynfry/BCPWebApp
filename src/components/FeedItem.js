@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import useFirestore from "../firebase/useFirestore";
 import Button from '@mui/material/Button';
+import Feedback from "./Feedback";
 
 
 function FeedItem({ item }) {
@@ -12,7 +13,7 @@ function FeedItem({ item }) {
   const [linkClicked, setLinkClicked] = useState(false); // State to track whether the link has been clicked
 
   const handleRatingChange = (event) => {
-    setRating(parseInt(event.target.value)); // Update the rating state when a radio button is selected
+    setRating(parseInt(event.target.value)); // Convert the value to an integer
   };
 
   const handleCommentChange = (event) => {
@@ -25,6 +26,11 @@ function FeedItem({ item }) {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    if (rating === 0 || comment.trim() === "") {
+      alert("Please provide both a rating and feedback before submitting.");
+      return; // Exit the function early if validation fails
+    }
 
     try {
       const id = item.id;
@@ -39,8 +45,14 @@ function FeedItem({ item }) {
     }
   };
 
-  const sentiment = ["Strongly against", "Somewhat against", "Neutral", "Somewhat for", "Strongly for"]
-  
+  const sentiment = [
+    { label: "Strongly against", value: 1 },
+    { label: "Somewhat against", value: 2 },
+    { label: "Neutral", value: 3 },
+    { label: "Somewhat for", value: 4 },
+    { label: "Strongly for", value: 5 }
+  ];  
+
   return (
     // div containing a link, description, datetime info and ID. Will detect once the link has been clicked
     <div className="feed-item card">
@@ -51,22 +63,21 @@ function FeedItem({ item }) {
       <p><b>Overview:</b><br/>{item.description}</p>
       <p>{item.dateTime}</p>
       <p><b>ID: </b>{item.id}</p>
-
       {linkClicked && ( // Show the form only if the link has been clicked
         <div>
           <form onSubmit={handleSubmit}>
             <fieldset>
-              <legend>Rate this content (1 being negative, 5 being positive):</legend>
-              {sentiment.map((value) => (
-                <label key={value}>
+              <legend>How do you feel towards this?</legend>
+              {sentiment.map(option => (
+                <label key={option.value}>
                   <input
                     type="radio"
                     name="rating"
-                    value={value}
-                    checked={rating === value}
+                    value={option.value}
+                    checked={rating === option.value}
                     onChange={handleRatingChange}
                   />
-                  {value}
+                  {option.label}
                 </label>
               ))}
               <legend>Leave your feedback:</legend>
@@ -76,7 +87,7 @@ function FeedItem({ item }) {
           </form>
         </div>
       )}
-
+    <Feedback item = {item}/>
     </div>
   );
 }
