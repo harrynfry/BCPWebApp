@@ -1,17 +1,67 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import useFirestore from "../firebase/useFirestore";
 import Button from '@mui/material/Button';
 import Feedback from "./Feedback";
 
 
 function FeedItem({ item }) {
-  console.log("feeditem render");
+  console.log("feeditem render ", item.id);
 
-  const {addFeedback} = useFirestore();
+  const {addFeedback, findFeedback} = useFirestore();
 
   const [rating, setRating] = useState(0); // State to track the selected rating
   const [comment, setComment] = useState(""); // State to track the feedback
   const [linkClicked, setLinkClicked] = useState(false); // State to track whether the link has been clicked
+  const [showFeedback, setShowFeedback] = useState(false); // State to track whether button to show feedback has been clicked
+
+  const [feedbackList, setFeedbackList] = useState([]); // State to hold feedback of article
+
+  // const tfb = [
+  //     {
+  //         "id": "1P4GaVwqefQyE0md1pzV",
+  //         "rating": "1",
+  //         "comment": "test1"
+  
+  //     },
+  //     {
+  //         "id": "4Ll0iTONFrRMoKHWIjp1",
+  //         "rating": "2",
+  //         "comment": "test2"
+  
+  //     },
+  //     {
+  //         "id": "3",
+  //         "rating": "3",
+  //         "comment": "test3"
+  
+  //     },
+  //     {
+  //         "id": "4",
+  //         "rating": "4",
+  //         "comment": "test4"
+  
+  //     },
+  //     {
+  //         "id": "5",
+  //         "rating": "5",
+  //         "comment": "test5"
+  
+  //     }
+  // ];
+  
+  
+  useEffect(() => {
+      // Call the getFeed function when the component mounts
+    const fetchFeedback = async () => {
+      try{
+        const feedbackData = await findFeedback(item); // call findFeedback function to get feedback
+        setFeedbackList(feedbackData); // Set feedback returned in state
+      }catch (error){
+        console.log("Error finding feedback: ", error);
+      }
+    };
+    fetchFeedback();
+    }, []); // Empty dependency array ensures the effect runs only once
 
   const handleRatingChange = (event) => {
     setRating(parseInt(event.target.value)); // Convert the value to an integer
@@ -46,6 +96,10 @@ function FeedItem({ item }) {
       console.error("Error adding feedback:", error);
     }
   };
+
+  const handleShowFeedback = () => {
+    setShowFeedback(!showFeedback);
+  }
 
   const sentiment = [
     { label: "Strongly against", value: 1 },
@@ -89,7 +143,8 @@ function FeedItem({ item }) {
           </form>
         </div>
       )}
-      <Feedback item = {item}/>
+      <Button variant="contained" onClick={handleShowFeedback}> {showFeedback ? "Hide Feedback" : "Show Feedback"} </Button>
+            {showFeedback && <Feedback key={item.id} item={feedbackList} />}
     </div>
   );
 }

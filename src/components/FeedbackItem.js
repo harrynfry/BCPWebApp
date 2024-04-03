@@ -1,15 +1,15 @@
 
 
 function FeedbackItem({feedback}){
+    console.log("feedbackItem render");
     return(
         <div>
-            <h3>id</h3>
+            <h5>id</h5>
             <p>{feedback.id}</p>
-            <h3>rating</h3>
+            <h5>rating</h5>
             <p>{feedback.rating}</p>
-            <h3>comment</h3>
+            <h5>comment</h5>
             <p>{feedback.comment}</p>
-
         </div>
     )
 }

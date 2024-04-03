@@ -58,63 +58,64 @@ function useFirestore(){
 
 
     // finds feedback from colletion attached to article
-    async function findFeedback(data){
-
-      try{
-        const articleQuery = query(collection(db, "articles"), where ("id", "==", data.id));
-        const articleQuerySnapshot = await getDocs(articleQuery);
-
-        if (articleQuerySnapshot.empty) {
-          console.error("No article found with ID: ", data.id);
+    async function findFeedback(data) {
+      console.log("Searching for feedback for article with ID: ", data.id);
+  
+      try {
+          // Get reference to the article document using its ID
+          const articleDocRef = doc(db, "articles", data.id);
+          const articleDocSnapshot = await getDoc(articleDocRef);
+  
+          if (!articleDocSnapshot.exists()) {
+              console.error("No article found with ID: ", data.id);
+              return [];
+          }
+  
+          // Get reference to the feedback subcollection of the article document
+          const feedbackCollRef = collection(articleDocRef, "feedback");
+          const feedbackCollSnapshot = await getDocs(feedbackCollRef);
+  
+          if (feedbackCollSnapshot.empty) {
+              console.log("Feedback for article is empty: ", data.id);
+              return [];
+          }
+  
+          const feedbackList = [];
+  
+          feedbackCollSnapshot.forEach(doc => {
+              const feedbackData = doc.data();
+              const feedbackObj = {
+                  id: doc.id,
+                  rating: feedbackData.rating,
+                  comment: feedbackData.comment
+              };
+              feedbackList.push(feedbackObj);
+          });
+  
+          console.log(feedbackList);
+          return feedbackList;
+  
+      } catch (error) {
+          console.error("Error getting feedback: ", error);
           return [];
-        }
-        // get 1st doc in query
-        const articleDocRef = articleQuerySnapshot.docs[0].ref;
-        console.log("Found the article");
+      }
+    }  
 
-        // Check if "feedback" collection exists
-        const feedbackCollRef = collection(articleDocRef, "feedback");
-        const feedbackCollSnapshot = await getDocs(feedbackCollRef);
-        
-        if (feedbackCollSnapshot.empty){
-          console.log("Feedback for article is empty: ", data.id);
-          return [];
-        }
-
-        const feedbackList = []; // Array to hold feedback objects
-
-        feedbackCollSnapshot.forEach(doc => {
-            const feedbackData = doc.data();
-            const feedbackObj = {
-                id: doc.id,
-                rating: feedbackData.rating,
-                comment: feedbackData.comment
-            };
-            feedbackList.push(feedbackObj);
-        });
-        console.log(feedbackList);
-        return feedbackList; // Return the array of feedback objects
-
-    } catch (error) {
-        console.error("Error getting feedback: ", error);
-        return [];
-    }
-    }
-
-    async function testFindFeedback(){
-      const feedbackList = [
-        { id: 1, rating: 4, comment: "Great article, very informative!" },
-        { id: 2, rating: 3, comment: "Good content, but could be more detailed." },
-        { id: 3, rating: 5, comment: "Excellent writing, loved it!" },
-        { id: 4, rating: 2, comment: "Not very helpful, needs improvement." },
-        { id: 5, rating: 1, comment: "Terrible article, waste of time." }
-      ];
-      return feedbackList;
-    }
+    // async function testFindFeedback(){
+    //   const feedbackList = [
+    //     { id: 1, rating: 4, comment: "Great article, very informative!" },
+    //     { id: 2, rating: 3, comment: "Good content, but could be more detailed." },
+    //     { id: 3, rating: 5, comment: "Excellent writing, loved it!" },
+    //     { id: 4, rating: 2, comment: "Not very helpful, needs improvement." },
+    //     { id: 5, rating: 1, comment: "Terrible article, waste of time." }
+    //   ];
+    //   return feedbackList;
+    // }
 
     // gets all articles from firestore
+    
     async function getFeed() {
-      console.log("hello");
+      console.log("getFeed");
       try {
           const articleQuery = collection(db, "articles");
           const querySnapshot = await getDocs(articleQuery);
@@ -142,7 +143,7 @@ function useFirestore(){
       }
     }
      
-    return {uploadArticles, addFeedback, findFeedback, getFeed, testFindFeedback};
+    return {uploadArticles, addFeedback, findFeedback, getFeed};
 
 }
 export default useFirestore;

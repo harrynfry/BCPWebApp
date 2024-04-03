@@ -1,17 +1,16 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import useFirestore from "../firebase/useFirestore";
+import React from 'react';
 import FeedbackItem from './FeedbackItem';
 
 function Feedback({ item }) {
-    const { findFeedback } = useFirestore();
-    const [feedbackList, setFeedbackList] = useState([]);
-    
+    console.log("feedback render ", item.id);
+    console.log(item);
+
     return (
         <div className='feedback-container'>
-            <h2>Feedback for {item.id}</h2>
-            {feedbackList.length > 0 ? (
+            <h4>Feedback for {item.id}</h4>
+            {item.length > 0 ? (
                 <ul>
-                    {feedbackList.map(feedback => (
+                    {item.map(feedback => (
                         <FeedbackItem key={feedback.id} feedback={feedback} />
                     ))}
                 </ul>
