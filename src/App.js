@@ -1,11 +1,11 @@
 import './App.css';
 import { initializeApp } from 'firebase/app';
 import React, { useEffect, useState } from 'react';
-import jsonData from './JSON_dumps/Scrape_2024-03-14_15-03-06.json';
 import Feed from './components/Feed';
 import Header from './components/Header';
 import Upload from './components/Upload';
 import DataDisplay from './components/DataDisplay';
+import useFirestore from './firebase/useFirestore';
 
 function App() {
 
@@ -23,11 +23,23 @@ function App() {
   
   if(!app.current) app.current = initializeApp(firebaseConfig);
 
+  const {getFeed} = useFirestore();
+
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    setData(jsonData);
-  }, []);
+    // Call the getFeed function when the component mounts
+    
+    const fetchArticles = async () => {
+      try {
+        const articlesData = await getFeed(); // Call the getFeed function to retrieve articles
+        setData(articlesData); // Update the state with the retrieved articles
+      } catch (error) {
+        console.error("Error fetching articles:", error);
+      }
+    };
+    fetchArticles(); // Invoke the fetchArticles function
+  }, []); // Empty dependency array ensures the effect runs only once
 
   return (
     <div className="App">

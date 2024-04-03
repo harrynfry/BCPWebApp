@@ -5,6 +5,7 @@ import Feedback from "./Feedback";
 
 
 function FeedItem({ item }) {
+  console.log("feeditem render");
 
   const {addFeedback} = useFirestore();
 
@@ -35,11 +36,12 @@ function FeedItem({ item }) {
     try {
       const id = item.id;
       // Call the addFeedback function to write data to Firestore
-      await addFeedback({articleID: id, rating: rating, comment: comment});
+      await addFeedback({id: id, rating: rating, comment: comment});
 
       // Reset rating and feedback states after successful submission
       setRating(0);
       setComment("");
+      alert("Thank you for your feedback.")
     } catch (error) {
       console.error("Error adding feedback:", error);
     }
@@ -87,7 +89,7 @@ function FeedItem({ item }) {
           </form>
         </div>
       )}
-    <Feedback item = {item}/>
+      <Feedback item = {item}/>
     </div>
   );
 }
