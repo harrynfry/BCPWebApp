@@ -1,12 +1,14 @@
 import FeedItem from './FeedItem';
+import { Box } from '@mui/material';
+
 
 function Feed({ data }) {
     return (
-      <div className="feed-container">
+      <Box margin={2}>
         {data.map((item, index) => (
           <FeedItem key={index} item={item} />
         ))}
-      </div>
+      </Box>
     );
   }
 export default Feed;

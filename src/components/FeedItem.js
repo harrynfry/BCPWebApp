@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import useFirestore from "../firebase/useFirestore";
 import Button from '@mui/material/Button';
 import Feedback from "./Feedback";
+import { Typography, Box, Link, autocompleteClasses } from "@mui/material";
 
 
 function FeedItem({ item }) {
@@ -13,7 +14,6 @@ function FeedItem({ item }) {
   const [comment, setComment] = useState(""); // State to track the feedback
   const [linkClicked, setLinkClicked] = useState(false); // State to track whether the link has been clicked
   const [showFeedback, setShowFeedback] = useState(false); // State to track whether button to show feedback has been clicked
-
   const [feedbackList, setFeedbackList] = useState([]); // State to hold feedback of article
 
   // const tfb = [
@@ -51,10 +51,10 @@ function FeedItem({ item }) {
   
   
   useEffect(() => {
-      // Call the getFeed function when the component mounts
+      // Call the fetchFeedback function when the component mounts
     const fetchFeedback = async () => {
       try{
-        const feedbackData = await findFeedback(item); // call findFeedback function to get feedback
+        const feedbackData = await findFeedback(item); // call findFeedback function from useFirestore to get feedback attached to item
         setFeedbackList(feedbackData); // Set feedback returned in state
       }catch (error){
         console.log("Error finding feedback: ", error);
@@ -111,32 +111,49 @@ function FeedItem({ item }) {
 
   return (
     // div containing a link, description, datetime info and ID. Will detect once the link has been clicked
-    <div className="feed-item card">
+    <Box 
+      marginTop={1}
+      marginLeft={1}
+      marginRight={1}
+      border={2}
+      borderRadius={5}
+      borderColor="#5419638e"
+      padding={2}
+      marginBottom={2}
+      bgcolor="aliceblue"
+    >
 
-      <a href={item.link} target="_blank" rel="noopener noreferrer" onClick={handleLinkClick}>
-        <h2>{item.link}</h2>
-      </a>
-      <p><b>Overview:</b><br/>{item.description}</p>
-      <p>{item.dateTime}</p>
-      <p><b>ID: </b>{item.id}</p>
+      <Link href = {item.link} target="_blank" rel="noopener noreferrer" onClick={handleLinkClick}>
+        <Typography variant="h6">{item.link}</Typography>
+      </Link>
+      <Typography variant="subtitle1"><b>Overview:</b></Typography>
+      <Typography variant="body1" gutterBottom>{item.description}</Typography>
+      <Typography variant="body2" gutterBottom>{item.dateTime}</Typography>
+      <Typography variant="caption" gutterBottom>ID: {item.id}</Typography>
+      <br/>
+
       {linkClicked && ( // Show the form only if the link has been clicked
         <div>
           <form onSubmit={handleSubmit}>
             <fieldset>
-              <legend>How do you feel towards this?</legend>
+              <Typography variant="subtitle1">
+                <legend><u>How do you feel towards this?</u></legend>
+              </Typography>
               {sentiment.map(option => (
-                <label key={option.value}>
-                  <input
-                    type="radio"
-                    name="rating"
-                    value={option.value}
-                    checked={rating === option.value}
-                    onChange={handleRatingChange}
-                  />
-                  {option.label}
-                </label>
+                <Typography variant="caption">
+                  <label key={option.value}>
+                    <input
+                      type="radio"
+                      name="rating"
+                      value={option.value}
+                      checked={rating === option.value}
+                      onChange={handleRatingChange}
+                    />
+                    {option.label}
+                  </label>
+                </Typography>
               ))}
-              <legend>Leave your feedback:</legend>
+              <Typography variant="body2"><legend>Leave your feedback:</legend></Typography>
               <textarea value={comment} onChange={handleCommentChange} style={{ width: "100%", height: "100%" }}/>
               <Button variant="contained" type="submit">Submit Rating and Feedback</Button>
             </fieldset>
@@ -144,8 +161,8 @@ function FeedItem({ item }) {
         </div>
       )}
       <Button variant="contained" onClick={handleShowFeedback}> {showFeedback ? "Hide Feedback" : "Show Feedback"} </Button>
-            {showFeedback && <Feedback key={item.id} item={feedbackList} />}
-    </div>
+            {showFeedback && <Feedback key={item.id} item={feedbackList} fbID={item.id} />} 
+    </Box>
   );
 }
 

@@ -1,13 +1,22 @@
 import React from 'react';
 import FeedbackItem from './FeedbackItem';
 
-function Feedback({ item }) {
-    console.log("feedback render ", item.id);
+function Feedback({ item, fbID }) {
+    
+    let total = 0;
+    item.forEach(fb => {
+        total += fb.rating;
+    });
+
+    let avg = total / item.length;
+
+    console.log("feedback render ", fbID);
     console.log(item);
+    console.log("avg = ", avg);
 
     return (
         <div className='feedback-container'>
-            <h4>Feedback for {item.id}</h4>
+            <h4>Average feedback for {fbID} = {avg}</h4>
             {item.length > 0 ? (
                 <ul>
                     {item.map(feedback => (

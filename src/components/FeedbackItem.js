@@ -1,11 +1,8 @@
-
-
-function FeedbackItem({feedback}){
+function FeedbackItem({feedback}){ // displays rating and feedback of prop
+    
     console.log("feedbackItem render");
     return(
-        <div>
-            <h5>id</h5>
-            <p>{feedback.id}</p>
+        <div className="feedBack-item card">
             <h5>rating</h5>
             <p>{feedback.rating}</p>
             <h5>comment</h5>
