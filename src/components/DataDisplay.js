@@ -5,7 +5,7 @@ import { Box, Typography} from '@mui/material';
 // Display data in a chart
 function DataDisplay(){
 
-    const grossExp = [
+    const spend = [
         {sector: 'Wellbeing', spend: 251138, color:'#fc0c0c' },
         {sector: 'Child services', spend: 108383, color:'#0fb900'},
         {sector: 'Operations', spend: 199157, color: '#0012b9'},
@@ -15,8 +15,8 @@ function DataDisplay(){
 
     const total = () =>{
         let t = 0;
-        for(let i = 0; i< grossExp.length; i++){
-            t += grossExp[i].spend;
+        for(let i = 0; i< spend.length; i++){
+            t += spend[i].spend;
         }
         return t;
     }
@@ -25,9 +25,9 @@ function DataDisplay(){
         
     const renderLegend = () => (
         <Typography variant="caption" gutterBottom>
-          {grossExp.map((entry, index) => (
+          {spend.map((entry, index) => (
             <span key={`legend-${index}`} style={{ color: entry.color }}>
-              {entry.sector}{index < grossExp.length - 1 ? ', ' : ''}
+              {entry.sector}{index < spend.length - 1 ? ', ' : ''}
             </span>
           ))}
         </Typography>
@@ -46,12 +46,12 @@ function DataDisplay(){
             <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                 <PieChart width={500} height={300} margin ={0}>
                     <Pie 
-                        data={grossExp}
+                        data={spend}
                         dataKey={"spend"}
                         outerRadius={100}
                         label
                     >
-                    {grossExp.map((entry, index) => (
+                    {spend.map((entry, index) => (
                             <Cell key={`cell-${index}`} fill={entry.color} />
                         ))}
                     </Pie>  
