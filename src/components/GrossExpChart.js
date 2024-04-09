@@ -1,5 +1,5 @@
 import React from 'react';
-import { PieChart, Pie, Cell, Legend } from 'recharts';
+import { PieChart, Pie, Cell, Legend, Tooltip } from 'recharts';
 import { Box, Typography} from '@mui/material';
 
 function GrossExpChart(){
@@ -34,6 +34,21 @@ function GrossExpChart(){
           . (£000's)
         </Typography>
       );
+    
+    // create tooltip with data in sector and spend
+    const renderTooltip = (data) => {
+        if (data.payload && data.payload[0]) {
+            const sector = data.payload[0].payload.sector;
+            const spend = data.payload[0].value;
+            return (
+                <div style={{ backgroundColor: 'white', padding: '5px', border: '1px solid #ccc' }}>
+                    <p><strong>{sector}</strong>: £{spend.toLocaleString()}</p>
+                </div>
+            );
+        }
+        return null;
+    };
+        
 
     return(
         <Box>
@@ -58,6 +73,7 @@ function GrossExpChart(){
                             <Cell key={`cell-${index}`} fill={entry.color} />
                         ))}
                     </Pie>  
+                    <Tooltip content={renderTooltip}/>
                     <Legend content={renderLegend} />
                 </PieChart>
             </Box>

@@ -1,4 +1,4 @@
-import { getFirestore, collection, addDoc, getDocs, query, where, setDoc, getDoc, doc } from "firebase/firestore";
+import { getFirestore, collection, addDoc, getDocs, query, where, getDoc, doc } from "firebase/firestore";
 // contains all firestore functions
 function useFirestore(){
 
@@ -30,29 +30,39 @@ function useFirestore(){
     // adds feedback and rating to article in sub collection
     async function addFeedback(formData){
       console.log(formData);
-      
-      try {
-        // Extract data from formData
-        const { id, rating, comment } = formData;
+      // Extract data from formData
+      let { id, rating, postcode, comment } = formData;
+      // Trim empty space and capitalise
+      postcode = postcode.trim().toUpperCase();
 
-        // Get reference to the article document
-        const articleDocRef = doc(db, "articles", id);
-        const articleQuerySnapshot = await getDoc(articleDocRef);
+      if(!postcode.startsWith("BH")){
+        alert("Sorry, you appear to live in an area that BCP do not operate in.");
+        return;
+      }else{
+        
+        try {
+          
+          // Get reference to the article document
+          const articleDocRef = doc(db, "articles", id);
+          const articleQuerySnapshot = await getDoc(articleDocRef);
 
-        // Check if the article document exists
-        if (articleQuerySnapshot.exists()) {
-            // Document exists, add feedback to "feedback" subcollection
-            const feedbackCollRef = collection(articleDocRef, "feedback");
-            const feedbackDocRef = await addDoc(feedbackCollRef, {
-                rating: rating,
-                comment: comment
-            });
-            console.log("Feedback added:", feedbackDocRef.id);
-        } else {
-            console.error("Article not found with ID:", id);
+          // Check if the article document exists
+          if (articleQuerySnapshot.exists()) {
+              // Document exists, add feedback to "feedback" subcollection
+              const feedbackCollRef = collection(articleDocRef, "feedback");
+              const feedbackDocRef = await addDoc(feedbackCollRef, {
+                  rating: rating,
+                  postcode: postcode,
+                  comment: comment
+              });
+              console.log("Feedback added:", feedbackDocRef.id);
+              alert("Thank you for your feedback!");
+          } else {
+              console.error("Article not found with ID:", id);
+          }
+        } catch (error) {
+            console.error("Error adding feedback:", error);
         }
-      } catch (error) {
-          console.error("Error adding feedback:", error);
       }
     }
 
@@ -87,6 +97,7 @@ function useFirestore(){
               const feedbackObj = {
                   id: doc.id,
                   rating: feedbackData.rating,
+                  postcode: feedbackData.postcode,
                   comment: feedbackData.comment
               };
               feedbackList.push(feedbackObj);

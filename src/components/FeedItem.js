@@ -2,20 +2,11 @@ import React, { useEffect, useState } from "react";
 import useFirestore from "../firebase/useFirestore";
 import Button from '@mui/material/Button';
 import Feedback from "./Feedback";
-import { Typography, Box, Link, autocompleteClasses } from "@mui/material";
+import { Typography, Box, Link } from "@mui/material";
 
 
 function FeedItem({ item }) {
-  console.log("feeditem render ", item.id);
-
-  const {addFeedback, findFeedback} = useFirestore();
-
-  const [rating, setRating] = useState(0); // State to track the selected rating
-  const [comment, setComment] = useState(""); // State to track the feedback
-  const [linkClicked, setLinkClicked] = useState(false); // State to track whether the link has been clicked
-  const [showFeedback, setShowFeedback] = useState(false); // State to track whether button to show feedback has been clicked
-  const [feedbackList, setFeedbackList] = useState([]); // State to hold feedback of article
-
+  
   // const tfb = [
   //     {
   //         "id": "1P4GaVwqefQyE0md1pzV",
@@ -49,26 +40,40 @@ function FeedItem({ item }) {
   //     }
   // ];
   
+  console.log("feeditem render ", item.id);
+
+  const {addFeedback, findFeedback} = useFirestore();
+
+  const [rating, setRating] = useState(0); // State to track the selected rating
+  const [postcode, setPostCode] = useState(""); // State to track the postcode
+  const [comment, setComment] = useState(""); // State to track the feedback
+  const [linkClicked, setLinkClicked] = useState(false); // State to track whether the link has been clicked
+  const [showFeedback, setShowFeedback] = useState(false); // State to track whether button to show feedback has been clicked
+  const [feedbackList, setFeedbackList] = useState([]); // State to hold feedback of article
   
+  // get feedback for feeditem on render
   useEffect(() => {
-      // Call the fetchFeedback function when the component mounts
     const fetchFeedback = async () => {
-      try{
-        const feedbackData = await findFeedback(item); // call findFeedback function from useFirestore to get feedback attached to item
-        setFeedbackList(feedbackData); // Set feedback returned in state
-      }catch (error){
-        console.log("Error finding feedback: ", error);
-      }
-    };
-    fetchFeedback();
-    }, []); // Empty dependency array ensures the effect runs only once
+    try{
+      const feedbackData = await findFeedback(item); // call findFeedback function from useFirestore to get feedback attached to item
+      setFeedbackList(feedbackData); // Set feedback returned in state
+    }catch (error){
+      console.log("Error finding feedback: ", error);
+    }
+  };
+  fetchFeedback();
+  }, []); // Empty dependency array ensures the effect runs only once
 
   const handleRatingChange = (event) => {
     setRating(parseInt(event.target.value)); // Convert the value to an integer
   };
 
+  const handlePostCodeChange = (event) => {
+    setPostCode(event.target.value); // Update the postcode state 
+  };
+
   const handleCommentChange = (event) => {
-    setComment(event.target.value); // Update the feedback state when a radio button is selected
+    setComment(event.target.value); // Update the comment state
   };
 
   const handleLinkClick = () => {
@@ -78,20 +83,24 @@ function FeedItem({ item }) {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    if (rating === 0 || comment.trim() === "") {
-      alert("Please provide both a rating and feedback before submitting.");
+    if (rating === 0 || postcode.trim() === "" || comment.trim() === "") {
+      alert("Please provide both a rating, postcode and feedback before submitting.");
       return; // Exit the function early if validation fails
     }
 
     try {
       const id = item.id;
       // Call the addFeedback function to write data to Firestore
-      await addFeedback({id: id, rating: rating, comment: comment});
+      await addFeedback({id: id, rating: rating, postcode: postcode, comment: comment});
 
       // Reset rating and feedback states after successful submission
       setRating(0);
+      setPostCode("");
       setComment("");
-      alert("Thank you for your feedback.")
+      
+      // Trigger a page reload
+      window.location.reload();
+    
     } catch (error) {
       console.error("Error adding feedback:", error);
     }
@@ -102,11 +111,9 @@ function FeedItem({ item }) {
   }
 
   const sentiment = [
-    { label: "Strongly against", value: 1 },
-    { label: "Somewhat against", value: 2 },
-    { label: "Neutral", value: 3 },
-    { label: "Somewhat for", value: 4 },
-    { label: "Strongly for", value: 5 }
+    { label: "Compliment", value: 1 },
+    { label: "Comment", value: 2 },
+    { label: "Complaint", value: 3 }
   ];  
 
   return (
@@ -135,10 +142,21 @@ function FeedItem({ item }) {
       {linkClicked && ( // Show the form only if the link has been clicked
         <div>
           <form onSubmit={handleSubmit}>
-            <fieldset>
+
+            <Box marginTop={1}
+              marginLeft={1}
+              marginRight={1}
+              border={1}
+              borderRadius={3}
+              borderColor="#5419638e"
+              padding={1}
+              marginBottom={2}
+              bgcolor="white">
+
               <Typography variant="subtitle1">
-                <legend><u>How do you feel towards this?</u></legend>
+                <legend>I'd like to leave a:</legend>
               </Typography>
+
               {sentiment.map(option => (
                 <Typography variant="caption">
                   <label key={option.value}>
@@ -153,14 +171,21 @@ function FeedItem({ item }) {
                   </label>
                 </Typography>
               ))}
+
+              
+              <Typography variant="body2"><legend>Your postcode:</legend></Typography>
+              <textarea value={postcode} onChange={handlePostCodeChange} style={{ width: "100%", height: "100%" }}/>
+              
               <Typography variant="body2"><legend>Leave your feedback:</legend></Typography>
               <textarea value={comment} onChange={handleCommentChange} style={{ width: "100%", height: "100%" }}/>
-              <Button variant="contained" type="submit">Submit Rating and Feedback</Button>
-            </fieldset>
+              
+              <Button variant="contained" type="submit">Submit Feedback</Button>
+           
+            </Box>
           </form>
         </div>
       )}
-      <Button variant="contained" onClick={handleShowFeedback}> {showFeedback ? "Hide Feedback" : "Show Feedback"} </Button>
+      <Button variant="contained" onClick={handleShowFeedback}> {showFeedback ? "Hide Community Feedback" : "Show Community Feedback"} </Button>
             {showFeedback && <Feedback key={item.id} item={feedbackList} fbID={item.id} />} 
     </Box>
   );
