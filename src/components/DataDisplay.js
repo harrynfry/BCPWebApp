@@ -1,62 +1,69 @@
-import React from 'react';
-import { PieChart, Pie, Cell, Legend } from 'recharts';
-import { Box, Typography} from '@mui/material';
+import React, {useState} from 'react';
+import { Box } from '@mui/material';
+import Button from '@mui/material/Button';
+import GrossExpChart from './GrossExpChart';
+import GrossInc from './GrossInc';
+import NetBudget from './NetBudget';
 
-// Display data in a chart
+// Display chart
 function DataDisplay(){
+   
+    const [currComp, setCurrComp] = useState('netBudget');
 
-    const spend = [
-        {sector: 'Wellbeing', spend: 251138, color:'#fc0c0c' },
-        {sector: 'Child services', spend: 108383, color:'#0fb900'},
-        {sector: 'Operations', spend: 199157, color: '#0012b9'},
-        {sector: 'Resources', spend: 143223, color:'#a50aa8'},
-        {sector: 'Executive', spend: 1110, color:'#000000'}
-    ];
-
-    const total = () =>{
-        let t = 0;
-        for(let i = 0; i< spend.length; i++){
-            t += spend[i].spend;
+    const handleNext = () => {
+        switch (currComp) {
+            case 'netBudget':
+                setCurrComp('grossExp');
+                break;
+            case 'grossExp':
+                setCurrComp('grossInc');
+                break;
+            case 'grossInc':
+                setCurrComp('netBudget');
+                break;
+            default:
+                setCurrComp('netBudget');
         }
-        return t;
+    };
+
+    const handlePrevious = () => {
+        switch (currComp) {
+            case 'netBudget':
+                setCurrComp('grossExp');
+                break;
+            case 'grossExp':
+                setCurrComp('grossInc');
+                break;
+            case 'grossInc':
+                setCurrComp('netBudget');
+                break;
+            default:
+                setCurrComp('netBudget');
+        }
+    };
+
+    const renderComp = () => {
+        switch (currComp) {
+            case 'netBudget':
+                return <NetBudget/>;
+            case 'grossExp':
+                return <GrossExpChart/>
+            case 'grossInc':
+                return <GrossInc/>
+            default:
+                return <NetBudget/>
+        }
     }
 
-    // Define an array of colors for each slice
-        
-    const renderLegend = () => (
-        <Typography variant="caption" gutterBottom>
-          {spend.map((entry, index) => (
-            <span key={`legend-${index}`} style={{ color: entry.color }}>
-              {entry.sector}{index < spend.length - 1 ? ', ' : ''}
-            </span>
-          ))}
-        </Typography>
-      );
-    
+
     return(
-        <Box sx={{ textAlign: 'center' }}>
-            <Box>
-            <Typography variant="h6" gutterBottom>
-                Breakdown of gross expenditure of £{total()} (£000) in BCP
-            </Typography>
-            <Typography variant="caption" gutterBottom>
-                Figures taken from General Fund Budget Summary 2023/2024: https://www.bcpcouncil.gov.uk/documents/about-the-council/BCP-Council-Budget-Book-from-2023-to-2024.pdf
-            </Typography>
-            </Box>
-            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                <PieChart width={500} height={300} margin ={0}>
-                    <Pie 
-                        data={spend}
-                        dataKey={"spend"}
-                        outerRadius={100}
-                        label
-                    >
-                    {spend.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={entry.color} />
-                        ))}
-                    </Pie>  
-                    <Legend content={renderLegend} />
-                </PieChart>
+        <Box sx={{ textAlign: 'center', justifyContent: 'space-between', marginLeft: '50px', marginRight: '50px' }}>
+            
+            {renderComp()}
+                
+            <Box sx={{ textAlign: 'center', display: 'flex', justifyContent: 'space-between', marginLeft: '50px', marginRight: '50px' }}>
+                <Button variant='contained' onClick={handlePrevious}>Previous</Button>
+                <Button variant='contained' onClick={handleNext}>Next</Button>
             </Box>
         </Box>
     )
