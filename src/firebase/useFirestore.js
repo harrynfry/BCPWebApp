@@ -1,4 +1,4 @@
-import { getFirestore, collection, addDoc, getDocs, query, where, getDoc, doc } from "firebase/firestore";
+import { getFirestore, collection, addDoc, getDocs, query, where, getDoc, doc, orderBy } from "firebase/firestore";
 // contains all firestore functions
 function useFirestore(){
 
@@ -9,6 +9,7 @@ function useFirestore(){
 
       const articleQuery = query(collection(db, "articles"), where("link", "==", data.link));
       const querySnapshot = await getDocs(articleQuery);
+      
       // checks to make sure no duplicates are uploaded
       if (!querySnapshot.empty){
         console.log("Article already uploaded: ", data.link);
@@ -128,10 +129,9 @@ function useFirestore(){
     async function getFeed() {
       console.log("getFeed");
       try {
-          const articleQuery = collection(db, "articles");
+        const articleQuery = query(collection(db, "articles"));
           const querySnapshot = await getDocs(articleQuery);
           const articles = [];
-  
           if (querySnapshot.empty) {
               console.log("No articles found.");
               return []; // Return an empty array if no articles are found
@@ -146,7 +146,6 @@ function useFirestore(){
               dateTime: data.dateTime
             });
           });
-
           return articles;
       } catch (error) {
           console.error("Error getting articles:", error);

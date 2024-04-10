@@ -1,6 +1,6 @@
 import React from 'react';
 import FeedbackItem from './FeedbackItem';
-import { Box } from '@mui/material';
+import { Typography, Box } from '@mui/material';
 
 function Feedback({ item, fbID }) {
     
@@ -45,20 +45,23 @@ function Feedback({ item, fbID }) {
         marginRight={1}
         border={1}
         borderRadius={3}
-        borderColor="#5419638e"
+        borderColor="#4a1657"
         padding={1}
         marginBottom={2}
         bgcolor="white">
             
-            <h4>Feedback has been {sentiment()} so far!</h4>
+            
             {item.length > 0 ? (
+                
                 <ul>
+                    <Typography variant='body1'>Feedback has been {sentiment()} so far!</Typography>
+                    
                     {item.map(feedback => (
                         <FeedbackItem key={feedback.id} feedback={feedback} />
                     ))}
                 </ul>
             ) : (
-                <p>No feedback available for {item.id}</p>
+                <Typography variant='body1'>No one has left any feedback yet, be the first!</Typography>
             )}
         </Box>
     );

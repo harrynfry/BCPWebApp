@@ -84,7 +84,7 @@ function FeedItem({ item }) {
     event.preventDefault();
 
     if (rating === 0 || postcode.trim() === "" || comment.trim() === "") {
-      alert("Please provide both a rating, postcode and feedback before submitting.");
+      alert("Please provide your postcode and feedback before submitting.");
       return; // Exit the function early if validation fails
     }
 
@@ -110,6 +110,24 @@ function FeedItem({ item }) {
     setShowFeedback(!showFeedback);
   }
 
+  const feedbackText = () => {
+    let txt = "Feedback:";
+    switch (rating) {
+        case 1:
+            txt = "We love compliments, let us know what you liked and how we can continue to improve below:";
+            break;
+        case 2:
+            txt = "Your comments and suggestions are important to us, please provide them below:";
+            break;
+        case 3:
+            txt = "Let us know what the problem is, and please suggest how we may improve below:";
+            break;
+        default:
+            break;
+    }
+    return txt;
+  };
+
   const sentiment = [
     { label: "Compliment", value: 1 },
     { label: "Comment", value: 2 },
@@ -123,8 +141,8 @@ function FeedItem({ item }) {
       marginLeft={1}
       marginRight={1}
       border={2}
-      borderRadius={5}
-      borderColor="#5419638e"
+      borderRadius={3}
+      borderColor="#4a1657"
       padding={2}
       marginBottom={2}
       bgcolor="aliceblue"
@@ -136,9 +154,9 @@ function FeedItem({ item }) {
       <Typography variant="subtitle1"><b>Overview:</b></Typography>
       <Typography variant="body1" gutterBottom>{item.description}</Typography>
       <Typography variant="body2" gutterBottom>{item.dateTime}</Typography>
-      <Typography variant="caption" gutterBottom>ID: {item.id}</Typography>
       <br/>
-
+      <Typography variant="body1"><b>Read the article using the link to leave your feedback!</b></Typography>
+      <br/>
       {linkClicked && ( // Show the form only if the link has been clicked
         <div>
           <form onSubmit={handleSubmit}>
@@ -148,12 +166,12 @@ function FeedItem({ item }) {
               marginRight={1}
               border={1}
               borderRadius={3}
-              borderColor="#5419638e"
+              borderColor="#4a1657"
               padding={1}
               marginBottom={2}
               bgcolor="white">
 
-              <Typography variant="subtitle1">
+              <Typography variant="subtitle2">
                 <legend>I'd like to leave a:</legend>
               </Typography>
 
@@ -166,6 +184,7 @@ function FeedItem({ item }) {
                       value={option.value}
                       checked={rating === option.value}
                       onChange={handleRatingChange}
+                      required
                     />
                     {option.label}
                   </label>
@@ -173,11 +192,11 @@ function FeedItem({ item }) {
               ))}
 
               
-              <Typography variant="body2"><legend>Your postcode:</legend></Typography>
-              <textarea value={postcode} onChange={handlePostCodeChange} style={{ width: "100%", height: "100%" }}/>
+              <Typography variant="subtitle2"><legend>Your postcode:</legend></Typography>
+              <input type='text' value={postcode} onChange={handlePostCodeChange} style={{ width: "10%", height: "100%" }} required/>
               
-              <Typography variant="body2"><legend>Leave your feedback:</legend></Typography>
-              <textarea value={comment} onChange={handleCommentChange} style={{ width: "100%", height: "100%" }}/>
+              <Typography variant="subtitle2"><legend>{feedbackText()}</legend></Typography>
+              <textarea value={comment} onChange={handleCommentChange} style={{ width: "100%", height: "100%" }} required/>
               
               <Button variant="contained" type="submit">Submit Feedback</Button>
            

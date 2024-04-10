@@ -1,4 +1,4 @@
-import './App.css';
+import './css/App.css';
 import { initializeApp } from 'firebase/app';
 import React, { useEffect, useState } from 'react';
 import Feed from './components/Feed';
@@ -6,6 +6,8 @@ import Header from './components/Header';
 import Upload from './components/Upload';
 import DataDisplay from './components/DataDisplay';
 import useFirestore from './firebase/useFirestore';
+
+import scrapeData from './JSON_dumps/Scrape_2024-04-10_11-46-34.json';
 
 function App() {
 
@@ -24,7 +26,6 @@ function App() {
   if(!app.current) app.current = initializeApp(firebaseConfig);
 
   const {getFeed} = useFirestore();
-
   const [data, setData] = useState([]);
 
   useEffect(() => {
@@ -33,6 +34,7 @@ function App() {
     const fetchArticles = async () => {
       try {
         const articlesData = await getFeed(); // Call the getFeed function to retrieve articles
+        articlesData.sort((a, b) => new Date(b.dateTime) - new Date(a.dateTime)); // Sort articles by date 
         setData(articlesData); // Update the state with the retrieved articles
       } catch (error) {
         console.error("Error fetching articles:", error);
@@ -43,7 +45,7 @@ function App() {
 
   return (
     <div className="App">
-      <Upload data = {data}/>
+      <Upload data = {scrapeData}/>
       <Header/>
       <DataDisplay/>
       <Feed data = {data}/>
