@@ -61,7 +61,7 @@ function NetBudget(){
             </Box>
 
             <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                <PieChart width={500} height={300} margin ={0}>
+                <PieChart aria-label="pie-chart" width={500} height={300} margin ={0}>
                     <Pie 
                         data={netBudget}
                         dataKey={"spend"}

@@ -120,10 +120,16 @@ function useFirestore(){
         const articleQuery = query(collection(db, "articles"));
           const querySnapshot = await getDocs(articleQuery);
           const articles = [];
+
+          if (!querySnapshot || !querySnapshot.forEach) {
+            console.log("Invalid querySnapshot:", querySnapshot);
+            return []; // Return an empty array if querySnapshot is invalid
+          }
+
           if (querySnapshot.empty) {
               console.log("No articles found.");
               return []; // Return an empty array if no articles are found
-          }
+          };
 
           querySnapshot.forEach((doc) => {
             const data = doc.data();
@@ -138,8 +144,8 @@ function useFirestore(){
       } catch (error) {
           console.error("Error getting articles:", error);
           return []; // Return an empty array if an error occurs
-      }
-    }
+      };
+    };
 
        // async function testFindFeedback(){
     //   const feedbackList = [

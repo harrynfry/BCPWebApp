@@ -11,15 +11,3 @@ test('renders DataDisplay buttons', () => {
     expect(previousButton).toBeInTheDocument();
     expect(nextButton).toBeInTheDocument();
 });
-
-test('clicking buttons changes state value', () => {
-    render(<DataDisplay />);
-
-    const previousButton = screen.getByRole('button', { name: /Previous/i });
-    const nextButton = screen.getByRole('button', { name: /Next/i });
-
-    fireEvent.click(next)
-
-    expect(previousButton).toBeInTheDocument();
-    expect(nextButton).toBeInTheDocument();
-});
