@@ -33,15 +33,15 @@ function App() {
     
     const fetchArticles = async () => {
       try {
-        const articlesData = await getFeed(); // Call the getFeed function to retrieve articles
-        articlesData.sort((a, b) => new Date(b.dateTime) - new Date(a.dateTime)); // Sort articles by date 
-        setData(articlesData); // Update the state with the retrieved articles
+        const articlesData = await getFeed(); // Call getFeed function to retrieve articles
+        articlesData.sort((a, b) => new Date(b.dateTime) - new Date(a.dateTime)); // Sort articles by date
+        setData(articlesData); // Update state with articles
       } catch (error) {
         console.error("Error fetching articles:", error);
       }
     };
-    fetchArticles(); // Invoke the fetchArticles function
-  }, []); // Empty dependency array ensures the effect runs only once
+    fetchArticles(); // Call fetchArticles 
+  }, []); // Empty dependency array, effect runs once
 
   return (
     <div className="App">

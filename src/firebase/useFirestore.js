@@ -113,19 +113,7 @@ function useFirestore(){
       }
     }  
 
-    // async function testFindFeedback(){
-    //   const feedbackList = [
-    //     { id: 1, rating: 4, comment: "Great article, very informative!" },
-    //     { id: 2, rating: 3, comment: "Good content, but could be more detailed." },
-    //     { id: 3, rating: 5, comment: "Excellent writing, loved it!" },
-    //     { id: 4, rating: 2, comment: "Not very helpful, needs improvement." },
-    //     { id: 5, rating: 1, comment: "Terrible article, waste of time." }
-    //   ];
-    //   return feedbackList;
-    // }
-
     // gets all articles from firestore
-    
     async function getFeed() {
       console.log("getFeed");
       try {
@@ -152,6 +140,17 @@ function useFirestore(){
           return []; // Return an empty array if an error occurs
       }
     }
+
+       // async function testFindFeedback(){
+    //   const feedbackList = [
+    //     { id: 1, rating: 4, comment: "Great article, very informative!" },
+    //     { id: 2, rating: 3, comment: "Good content, but could be more detailed." },
+    //     { id: 3, rating: 5, comment: "Excellent writing, loved it!" },
+    //     { id: 4, rating: 2, comment: "Not very helpful, needs improvement." },
+    //     { id: 5, rating: 1, comment: "Terrible article, waste of time." }
+    //   ];
+    //   return feedbackList;
+    // }
      
     return {uploadArticles, addFeedback, findFeedback, getFeed};
 

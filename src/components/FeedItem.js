@@ -50,7 +50,7 @@ function FeedItem({ item }) {
   const [linkClicked, setLinkClicked] = useState(false); // State to track whether the link has been clicked
   const [showFeedback, setShowFeedback] = useState(false); // State to track whether button to show feedback has been clicked
   const [feedbackList, setFeedbackList] = useState([]); // State to hold feedback of article
-  
+  const [commentLength, setCommentLength] = useState(400); // State to track remaing char in comment
   // get feedback for feeditem on render
   useEffect(() => {
     const fetchFeedback = async () => {
@@ -73,7 +73,10 @@ function FeedItem({ item }) {
   };
 
   const handleCommentChange = (event) => {
-    setComment(event.target.value); // Update the comment state
+    const txt = event.target.value;
+    const charLeft = 250 - txt.length;
+    setCommentLength(charLeft);
+    setComment(txt); // Update the comment state
   };
 
   const handleLinkClick = () => {
@@ -196,10 +199,11 @@ function FeedItem({ item }) {
               <input type='text' value={postcode} onChange={handlePostCodeChange} style={{ width: "10%", height: "100%" }} required/>
               
               <Typography variant="subtitle2"><legend>{feedbackText()}</legend></Typography>
-              <textarea value={comment} onChange={handleCommentChange} style={{ width: "100%", height: "100%" }} required/>
-              
-              <Button variant="contained" type="submit">Submit Feedback</Button>
-           
+              <textarea value={comment} onChange={handleCommentChange} style={{ width: "100%", height: "100%" }} maxLength ={400} required/>
+              <Typography variant="caption" gutterBottom>Remaining characters: {commentLength}</Typography>
+              <Box>
+                <Button variant="contained" type="submit">Submit Feedback</Button>
+              </Box> 
             </Box>
           </form>
         </div>

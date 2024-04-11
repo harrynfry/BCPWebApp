@@ -21,12 +21,35 @@ function Feedback({ item, fbID }) {
 
     // set sentiment value based on largest amount of comments
     const sentiment = () => {
+
+        const total = numCompliments + numComplaints + numComments;
+        const complimentPercentage = numCompliments / total;
+        const complaintPercentage = numComplaints / total;
+
+
+
         if (numCompliments === numComplaints && numComplaints === numComments) {
-            return "Split";
+            return ("Split");
         } else if (numCompliments > numComplaints && numCompliments > numComments) {
-            return "Positive";
+            if(complimentPercentage > 0.75){
+                return ("Extremely positive!");
+            }else if(complimentPercentage > 0.5){
+                return("Very positive!");
+            }else if(complimentPercentage > 0.25){
+                return("Positive!");
+            }else{
+                return("Slightly positive!");
+            }
         } else if (numComplaints > numCompliments && numComplaints > numComments) {
-            return "Negative";
+            if(complaintPercentage > 0.75){
+                return ("Extremely negative!");
+            }else if(complaintPercentage > 0.5){
+                return("Very negative!");
+            }else if(complaintPercentage > 0.25){
+                return("Negative!");
+            }else{
+                return("Slightly negative!");
+            }
         } else {
             return "Neutral";
         }
@@ -54,7 +77,7 @@ function Feedback({ item, fbID }) {
             {item.length > 0 ? (
                 
                 <ul>
-                    <Typography variant='body1'>Feedback has been {sentiment()} so far!</Typography>
+                    <Typography variant='body1'>Feedback so far has been {sentiment()}</Typography>
                     
                     {item.map(feedback => (
                         <FeedbackItem key={feedback.id} feedback={feedback} />
