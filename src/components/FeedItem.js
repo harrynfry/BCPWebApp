@@ -150,15 +150,13 @@ function FeedItem({ item }) {
       marginBottom={2}
       bgcolor="aliceblue"
     >
-
+      <Typography variant="body1" data-testid="overview"><b>Overview:</b></Typography>
+      <Typography variant="body1"  data-testid="desc">{item.description}</Typography>
       <Link href = {item.link} target="_blank" rel="noopener noreferrer" onClick={handleLinkClick}>
-        <Typography variant="h6">{item.link}</Typography>
+        <Typography variant="body1" data-testid="link">{item.link}</Typography>
       </Link>
-      <Typography variant="subtitle1"><b>Overview:</b></Typography>
-      <Typography variant="body1" gutterBottom>{item.description}</Typography>
-      <Typography variant="body2" gutterBottom>{item.dateTime}</Typography>
-      <br/>
-      <Typography variant="body1"><b>Read the article using the link to leave your feedback!</b></Typography>
+      <Typography variant="caption"  data-testid="dateTime">{item.dateTime}</Typography>
+      <Typography variant="body2" data-testid="body1"><b>Read the article via the link to be able leave your feedback!</b></Typography>
       <br/>
       {linkClicked && ( // Show the form only if the link has been clicked
         <div>
@@ -174,7 +172,7 @@ function FeedItem({ item }) {
               marginBottom={2}
               bgcolor="white">
 
-              <Typography variant="subtitle2">
+              <Typography variant="subtitle2" data-testid="leaveA">
                 <legend>I'd like to leave a:</legend>
               </Typography>
 
@@ -188,6 +186,7 @@ function FeedItem({ item }) {
                       checked={rating === option.value}
                       onChange={handleRatingChange}
                       required
+                      data-testid="option"
                     />
                     {option.label}
                   </label>
@@ -195,20 +194,20 @@ function FeedItem({ item }) {
               ))}
 
               
-              <Typography variant="subtitle2"><legend>Your postcode:</legend></Typography>
-              <input type='text' value={postcode} onChange={handlePostCodeChange} style={{ width: "10%", height: "100%" }} required/>
+              <Typography variant="subtitle2" data-testid="postcode"><legend>Your postcode:</legend></Typography>
+              <input type='text' value={postcode} onChange={handlePostCodeChange} style={{ width: "10%", height: "100%" }} required data-testid="postcodeinput"/>
               
-              <Typography variant="subtitle2"><legend>{feedbackText()}</legend></Typography>
-              <textarea value={comment} onChange={handleCommentChange} style={{ width: "100%", height: "100%" }} maxLength ={400} required/>
-              <Typography variant="caption" gutterBottom>Remaining characters: {commentLength}</Typography>
+              <Typography variant="subtitle2" data-testid="feedbackTxt"><legend>{feedbackText()}</legend></Typography>
+              <textarea value={comment} onChange={handleCommentChange} style={{ width: "100%", height: "100%" }} maxLength ={400} required data-testid="feedbackTxtArea"/>
+              <Typography variant="caption" gutterBottom data-testid="char">Remaining characters: {commentLength}</Typography>
               <Box>
-                <Button variant="contained" type="submit">Submit Feedback</Button>
+                <Button variant="contained" type="submit" data-testid="submitBtn">Submit Feedback</Button>
               </Box> 
             </Box>
           </form>
         </div>
       )}
-      <Button variant="contained" onClick={handleShowFeedback}> {showFeedback ? "Hide Community Feedback" : "Show Community Feedback"} </Button>
+      <Button variant="contained" color="secondary" size="medium" onClick={handleShowFeedback} data-testid="showFeedbackBtn"> {showFeedback ? "Hide Community Feedback" : "Show Community Feedback"} </Button>
             {showFeedback && <Feedback key={item.id} item={feedbackList} fbID={item.id} />} 
     </Box>
   );

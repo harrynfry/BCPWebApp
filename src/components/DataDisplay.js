@@ -61,7 +61,7 @@ function DataDisplay(){
             
             {renderComp()}
                 
-            <Box sx={{ textAlign: 'center', display: 'flex', justifyContent: 'space-between', marginLeft: '50px', marginRight: '50px' }}>
+            <Box sx={{ textAlign: 'center', display: 'flex', justifyContent: 'space-between', marginLeft: '150px', marginRight: '150px' }}>
                 <Button variant='contained' onClick={handlePrevious}>Previous</Button>
                 <Button variant='contained' onClick={handleNext}>Next</Button>
             </Box>

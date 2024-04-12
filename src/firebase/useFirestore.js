@@ -6,6 +6,7 @@ function useFirestore(){
 
     // Uploads scraped articles into "articles" collection
     async function uploadArticles(data){
+      console.log("upload useFire");
 
       const articleQuery = query(collection(db, "articles"), where("link", "==", data.link));
       const querySnapshot = await getDocs(articleQuery);

@@ -7,59 +7,65 @@ function Feedback({ item, fbID }) {
     let numCompliments = 0;
     let numComplaints = 0;
     let numComments = 0;
-
+    
     // gather amount of compliments, comments and complaints
     item.forEach(fb => {
         if(fb.rating === 1){
-            numCompliments+=1;
-        }else if(fb.rating ===2){
-            numComplaints +=1;
+            numCompliments++;
+        }else if(fb.rating ===3){
+            numComplaints ++;
         }else{
-            numComments+=1;
+            numComments++;
         }
     });
 
+    
+
     // set sentiment value based on largest amount of comments
     const sentiment = () => {
-
         const total = numCompliments + numComplaints + numComments;
-        const complimentPercentage = numCompliments / total;
-        const complaintPercentage = numComplaints / total;
-
-
-
+        const totalPosCom = numCompliments + numComments;
+        const totalNegCom = numComplaints + numComments;
+    
+        // Calculate the percentage difference
+        const positiveExcessPercentage = (numCompliments - totalNegCom) / total;
+        const negativeExcessPercentage = (numComplaints - totalPosCom) / total;
+        console.log(positiveExcessPercentage);
+        console.log(negativeExcessPercentage);
+    
         if (numCompliments === numComplaints && numComplaints === numComments) {
-            return ("Split");
-        } else if (numCompliments > numComplaints && numCompliments > numComments) {
-            if(complimentPercentage > 0.75){
-                return ("Extremely positive!");
-            }else if(complimentPercentage > 0.5){
-                return("Very positive!");
-            }else if(complimentPercentage > 0.25){
-                return("Positive!");
-            }else{
-                return("Slightly positive!");
+            return "split";
+        } else if (positiveExcessPercentage > 0) {
+            if (positiveExcessPercentage > 0.66) {
+                return "extremely positive!";
+            } else if (positiveExcessPercentage > 0.33) {
+                return "very positive!";
+            } else if (positiveExcessPercentage > 0.15) {
+                return "positive!";
+            } else {
+                return "slightly positive!";
             }
-        } else if (numComplaints > numCompliments && numComplaints > numComments) {
-            if(complaintPercentage > 0.75){
-                return ("Extremely negative!");
-            }else if(complaintPercentage > 0.5){
-                return("Very negative!");
-            }else if(complaintPercentage > 0.25){
-                return("Negative!");
-            }else{
-                return("Slightly negative!");
+        } else if (negativeExcessPercentage > 0) {
+            if (negativeExcessPercentage > 0.66) {
+                return "extremely negative!";
+            } else if (negativeExcessPercentage > 0.33) {
+                return "very negative!";
+            } else if (negativeExcessPercentage > 0.15) {
+                return "negative!";
+            } else {
+                return "slightly negative!";
             }
         } else {
-            return "Neutral";
+            return "neutral";
         }
-    }
+    };
 
     console.log("feedback render ", fbID);
     console.log(item);
     console.log("compliments", numCompliments);
     console.log("complaints", numComplaints);
     console.log("comments", numComments);
+    
 
     return (
         <Box
@@ -77,14 +83,14 @@ function Feedback({ item, fbID }) {
             {item.length > 0 ? (
                 
                 <ul>
-                    <Typography variant='body1'>Feedback so far has been {sentiment()}</Typography>
+                    <Typography variant='body1' data-testid='sentimenttxt'>Feedback so far has been {sentiment()}</Typography>
                     
                     {item.map(feedback => (
                         <FeedbackItem key={feedback.id} feedback={feedback} />
                     ))}
                 </ul>
             ) : (
-                <Typography variant='body1'>No one has left any feedback yet, be the first!</Typography>
+                <Typography variant='body1' data-testid='notxt'>No one has left any feedback yet, be the first!</Typography>
             )}
         </Box>
     );

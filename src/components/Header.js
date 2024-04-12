@@ -11,8 +11,9 @@ function Header(){
               padding={1}
               marginBottom={2}
               bgcolor="white">
-          <Typography marginLeft={2}>
+          <Typography marginTop={1} marginLeft={20} marginRight={20} marginBottom={1} textAlign={'center'}>
             Welcome to my BCP Web Application. Here you can find budget charts as well as news from BCP council, while also being able to provide and view community feedback. 
+            To leave feedback you'll have to click the article link, a submission form will then appear.
           </Typography>
         </Box>
       </Box>
