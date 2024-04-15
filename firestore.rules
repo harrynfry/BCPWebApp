@@ -1,0 +1,11 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /articles/{articleId} {
+      allow read, write: if true; // Allow anyone to read from and write to the "articles" collection
+    }
+    match /articles/{articleId}/feedback/{feedbackId} {
+      allow read, write: if true;
+    }
+  }
+}

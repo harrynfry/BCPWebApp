@@ -123,13 +123,13 @@ function FeedItem({ item }) {
     let txt = "Feedback:";
     switch (rating) {
         case 1:
-            txt = "We love compliments, let us know what you liked and how we can continue to improve below:";
+            txt = "Cpmliments are great! Let BCP know what you liked about this below:";
             break;
         case 2:
-            txt = "Your comments and suggestions are important to us, please provide them below:";
+            txt = "Your comments and suggestions are important, please provide them below:";
             break;
         case 3:
-            txt = "Let us know what the problem is, and please suggest how we may improve below:";
+            txt = "Let BCP know what the problem is, and please suggest how they may improve below:";
             break;
         default:
             break;
