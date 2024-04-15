@@ -25,14 +25,21 @@ function GrossInc(){
 
     // create legend for chart 
     const renderLegend = () => (
-        <Typography variant="caption" gutterBottom>
-          {grossInc.map((entry, index) => (
-            <span key={`legend-${index}`} style={{ color: entry.color }}>
-              {entry.sector}{index < grossInc.length - 1 ? ', ' : ''}
-            </span>
-          ))}
-          . (£000's)
-        </Typography>
+        <Box sx={{ display: 'flex',
+        justifyContent: 'center',
+        flexWrap: 'wrap',
+        maxWidth: '90%', 
+        margin: 'auto', 
+        padding: '10px'}}>
+            <Typography variant="caption" >
+                {grossInc.map((entry, index) => (
+                    <span key={`legend-${index}`} style={{ color: entry.color}}>
+                        {entry.sector}{index < grossInc.length - 1 ? ', ' : ''}
+                    </span>
+                ))}
+                . (£000's)
+            </Typography>
+        </Box>
       );
 
     // create tooltip with data in sector and spend
@@ -51,7 +58,7 @@ function GrossInc(){
 
     return(
         <Box>
-            <Box>
+            <Box sx={{ margin:1 }}>
                 <Typography variant="h6" gutterBottom>
                     Breakdown of gross income for 23/24: £{total()} in BCP
                 </Typography>
@@ -61,7 +68,7 @@ function GrossInc(){
             </Box>
 
             <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                <PieChart aria-label="pie-chart" width={500} height={300} margin ={0}>
+                <PieChart aria-label="pie-chart" width={375} height={400} margin ={0}>
                     <Pie 
                         data={grossInc}
                         dataKey={"spend"}

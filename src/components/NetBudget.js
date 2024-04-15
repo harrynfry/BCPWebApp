@@ -25,14 +25,23 @@ function NetBudget(){
 
     // create legend for chart 
     const renderLegend = () => (
-        <Typography variant="caption" gutterBottom>
-          {netBudget.map((entry, index) => (
-            <span key={`legend-${index}`} style={{ color: entry.color }}>
-              {entry.sector}{index < netBudget.length - 1 ? ', ' : ''}
-            </span>
-          ))}
-          . (£000's)
-        </Typography>
+        <Box sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            flexWrap: 'wrap',
+            maxWidth: '90%', 
+            margin: 'auto', 
+            padding: '10px'
+        }}>
+            <Typography variant="caption" >
+                {netBudget.map((entry, index) => (
+                    <span key={`legend-${index}`} style={{ color: entry.color}}>
+                        {entry.sector}{index < netBudget.length - 1 ? ', ' : ''}
+                    </span>
+                ))}
+                . (£000's)
+            </Typography>
+        </Box>
       );
     
     // create tooltip with data in sector and spend
@@ -49,9 +58,10 @@ function NetBudget(){
         return null;
     };
 
+
     return(
         <Box>
-            <Box>
+            <Box sx={{ margin:1 }}>
                 <Typography variant="h6" gutterBottom>
                     Breakdown of net budget for 23/24: £{total()} in BCP
                 </Typography>
@@ -61,7 +71,7 @@ function NetBudget(){
             </Box>
 
             <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                <PieChart aria-label="pie-chart" width={500} height={300} margin ={0}>
+                <PieChart aria-label="pie-chart" width={375} height={400} margin ={0}>
                     <Pie 
                         data={netBudget}
                         dataKey={"spend"}

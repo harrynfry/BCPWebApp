@@ -51,6 +51,8 @@ function FeedItem({ item }) {
   const [showFeedback, setShowFeedback] = useState(false); // State to track whether button to show feedback has been clicked
   const [feedbackList, setFeedbackList] = useState([]); // State to hold feedback of article
   const [commentLength, setCommentLength] = useState(400); // State to track remaing char in comment
+
+
   // get feedback for feeditem on render
   useEffect(() => {
     const fetchFeedback = async () => {
@@ -64,6 +66,7 @@ function FeedItem({ item }) {
   fetchFeedback();
   }, []); // Empty dependency array ensures the effect runs only once
 
+
   const handleRatingChange = (event) => {
     setRating(parseInt(event.target.value)); // Convert the value to an integer
   };
@@ -72,17 +75,20 @@ function FeedItem({ item }) {
     setPostCode(event.target.value); // Update the postcode state 
   };
 
+
   const handleCommentChange = (event) => {
     const txt = event.target.value;
     const charLeft = 250 - txt.length;
     setCommentLength(charLeft);
     setComment(txt); // Update the comment state
   };
+  
 
   const handleLinkClick = () => {
     setLinkClicked(true); // Update the state to indicate that the link has been clicked
   };
 
+  
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -139,27 +145,28 @@ function FeedItem({ item }) {
 
   return (
     // div containing a link, description, datetime info and ID. Will detect once the link has been clicked
-    <Box 
-      marginTop={1}
-      marginLeft={1}
-      marginRight={1}
-      border={2}
-      borderRadius={3}
-      borderColor="#4a1657"
-      padding={2}
-      marginBottom={2}
-      bgcolor="aliceblue"
-    >
+    <Box sx={{
+        marginTop: 1,
+        marginLeft: 1,
+        marginRight: 1,
+        padding: 2,
+        marginBottom: 2,
+        bgcolor: "aliceblue",
+        border: 2,
+        borderRadius: 3,
+        borderColor: "#4a1657",
+        boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.3)" 
+    }}>
       <Typography variant="body1" data-testid="overview"><b>Overview:</b></Typography>
       <Typography variant="body1"  data-testid="desc">{item.description}</Typography>
       <Link href = {item.link} target="_blank" rel="noopener noreferrer" onClick={handleLinkClick}>
         <Typography variant="body1" data-testid="link">{item.link}</Typography>
       </Link>
-      <Typography variant="caption"  data-testid="dateTime">{item.dateTime}</Typography>
-      <Typography variant="body2" data-testid="body1"><b>Read the article via the link to be able leave your feedback!</b></Typography>
+      <Typography variant="body2"  data-testid="dateTime">{item.dateTime}</Typography>
+      <Typography variant="body2" data-testid="body1"><b>Read the article to leave your feedback!</b></Typography>
       <br/>
       {linkClicked && ( // Show the form only if the link has been clicked
-        <div>
+        <Box>
           <form onSubmit={handleSubmit}>
 
             <Box marginTop={1}
@@ -205,7 +212,7 @@ function FeedItem({ item }) {
               </Box> 
             </Box>
           </form>
-        </div>
+        </Box>
       )}
       <Button variant="contained" color="secondary" size="medium" onClick={handleShowFeedback} data-testid="showFeedbackBtn"> {showFeedback ? "Hide Community Feedback" : "Show Community Feedback"} </Button>
             {showFeedback && <Feedback key={item.id} item={feedbackList} fbID={item.id} />} 

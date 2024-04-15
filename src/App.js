@@ -3,11 +3,9 @@ import { initializeApp } from 'firebase/app';
 import React, { useEffect, useState } from 'react';
 import Feed from './components/Feed';
 import Header from './components/Header';
-import Upload from './components/Upload';
 import DataDisplay from './components/DataDisplay';
 import useFirestore from './firebase/useFirestore';
-
-import scrapeData from './JSON_dumps/Scrape_2024-04-10_11-46-34.json';
+import Footer from './components/Footer';
 
 function App() {
 
@@ -45,10 +43,10 @@ function App() {
 
   return (
     <div className="App">
-      <Upload data = {scrapeData}/>
       <Header/>
       <DataDisplay/>
       <Feed data = {data}/>
+      <Footer/>
     </div>
   );
 }
