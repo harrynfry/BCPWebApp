@@ -12,7 +12,7 @@ function Header(){
               marginBottom={2}
               bgcolor="white">
           <Typography marginTop={1} marginLeft={2} marginRight={2} marginBottom={1} textAlign={'center'}>
-            Welcome to my BCP Web App, here you'll be able to council news and updates while also being able to leave your feedback and opinions!
+            Welcome to my BCP Web App, here you'll be able to view council news and updates, while also being able to leave your feedback and opinions!
             Before you can leave any feedback, you must access the article via the supplied link. 
           </Typography>
 
