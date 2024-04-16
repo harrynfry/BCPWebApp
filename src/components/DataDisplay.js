@@ -60,11 +60,12 @@ function DataDisplay(){
         }
     }
 
+    // handler for show charts btn
     const handleShowCharts = () => {
         setShowCharts(!showCharts);
     }
 
-
+    // return content, container with "show charts btn" and chart components
     return(
         <Box sx={{ textAlign: 'center', justifyContent: 'center',
         flexWrap: 'wrap',

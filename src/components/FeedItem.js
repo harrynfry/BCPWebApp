@@ -115,10 +115,12 @@ function FeedItem({ item }) {
     }
   };
 
+  // handle showfeedback btn
   const handleShowFeedback = () => {
     setShowFeedback(!showFeedback);
   }
 
+  // set text in element based on comment type
   const feedbackText = () => {
     let txt = "Feedback:";
     switch (rating) {
@@ -144,7 +146,7 @@ function FeedItem({ item }) {
   ];  
 
   return (
-    // div containing a link, description, datetime info and ID. Will detect once the link has been clicked
+    // div containing a link, description, datetime info and ID. Will detect once the link has been clicked to display feedback form
     <Box sx={{
         marginTop: 1,
         marginLeft: 1,
@@ -157,8 +159,8 @@ function FeedItem({ item }) {
         borderColor: "#4a1657",
         boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.3)" 
     }}>
-      <Typography variant="body1" data-testid="overview"><b>Overview:</b></Typography>
-      <Typography variant="body1"  data-testid="desc">{item.description}</Typography>
+      
+      <Typography variant="h6"  data-testid="desc">{item.description}</Typography>
       <Link href = {item.link} target="_blank" rel="noopener noreferrer" onClick={handleLinkClick}>
         <Typography variant="body1" data-testid="link">{item.link}</Typography>
       </Link>
@@ -207,13 +209,16 @@ function FeedItem({ item }) {
               <Typography variant="subtitle2" data-testid="feedbackTxt"><legend>{feedbackText()}</legend></Typography>
               <textarea value={comment} onChange={handleCommentChange} style={{ width: "100%", height: "100%" }} maxLength ={400} required data-testid="feedbackTxtArea"/>
               <Typography variant="caption" gutterBottom data-testid="char">Remaining characters: {commentLength}</Typography>
+
               <Box>
                 <Button variant="contained" type="submit" data-testid="submitBtn">Submit Feedback</Button>
               </Box> 
+
             </Box>
           </form>
         </Box>
       )}
+      
       <Button variant="contained" color="secondary" size="medium" onClick={handleShowFeedback} data-testid="showFeedbackBtn"> {showFeedback ? "Hide Community Feedback" : "Show Community Feedback"} </Button>
             {showFeedback && <Feedback key={item.id} item={feedbackList} fbID={item.id} />} 
     </Box>

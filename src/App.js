@@ -11,20 +11,22 @@ function App() {
 
   const app = React.useRef(null);
 
+  // firebase config, .env file 
   const firebaseConfig = {
-    apiKey: "AIzaSyDGpaPbpF0fV5c-LrK67xIHmqqPqWr_AWg",
-    authDomain: "bcp-feedback-app.firebaseapp.com",
-    projectId: "bcp-feedback-app",
-    storageBucket: "bcp-feedback-app.appspot.com",
-    messagingSenderId: "450285576701",
-    appId: "1:450285576701:web:46d419255526a6de407994",
-    measurementId: "G-KTZG51ET7C"
+    apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+    authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+    projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+    storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+    appId: process.env.REACT_APP_FIREBASE_APP_ID,
+    measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID
   };
+  
   
   if(!app.current) app.current = initializeApp(firebaseConfig);
 
-  const {getFeed} = useFirestore();
-  const [data, setData] = useState([]);
+  const {getFeed} = useFirestore(); 
+  const [data, setData] = useState([]); // set data from firestore in state upon page render
 
   useEffect(() => {
     // Call the getFeed function when the component mounts

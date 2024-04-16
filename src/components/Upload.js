@@ -16,7 +16,6 @@ function Upload({ data }) {
       console.log("All articles uploaded successfully");
     } catch (error) {
       console.error("Error uploading articles:", error);
-      // Handle error (e.g., show error message to the user)
     }
   }
 

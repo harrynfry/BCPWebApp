@@ -3,6 +3,8 @@ import { Box, Typography } from '@mui/material';
 
 
 function Feed({ data }) {
+
+  // returns container with FeedItem components
     return (
       <Box margin={2}>
         

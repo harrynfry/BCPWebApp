@@ -66,6 +66,7 @@ function Feedback({ item, fbID }) {
     console.log("complaints", numComplaints);
     console.log("comments", numComments);
     
+    // container with ul, renders feedbackitem components
 
     return (
         <Box

@@ -32,7 +32,7 @@ test('Feed component, renders multiple items in child component', async () => {
       // Render the Feed component with mock data
       render(<Feed data={mockData} />);
   
-      // Check if the link, description, and date/time for each item are rendered
+      // Check link, description, and date/time for each item are rendered
       expect(await screen.findByText('https://example.com/1')).toBeInTheDocument();
       expect(await screen.findByText('Description for item 1')).toBeInTheDocument();
       expect(await screen.findByText('Published: Thursday 01 January 2024')).toBeInTheDocument();

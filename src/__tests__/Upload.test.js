@@ -18,6 +18,7 @@ jest.mock('firebase/firestore', () => ({
   doc: jest.fn(),
 }));
 
+// test upload button renders
 describe('Test the upload button', () => {
 
   test('renders upload button', () => {
@@ -26,6 +27,7 @@ describe('Test the upload button', () => {
     expect(uploadButton).toBeInTheDocument();
   });
 
+  // test that button click works
   test('executes click handler on button click', () => {
     const { getByText } = render(<Upload />);
     const uploadButton = getByText("Upload");

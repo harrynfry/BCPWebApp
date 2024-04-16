@@ -1,8 +1,10 @@
 import React from "react";
 import { Box, Typography} from '@mui/material';
 
-function VideoComp(){
 
+// returns BCP youtube video
+function VideoComp(){
+    
 
     return(
         <Box sx={{ textAlign: 'center', justifyContent: 'center',

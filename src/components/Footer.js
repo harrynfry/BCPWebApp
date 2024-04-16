@@ -1,5 +1,7 @@
 import {Box, Typography} from "@mui/material";
 
+
+// returns footer content
 function Footer(){
     return(
         <Box textAlign={"center"} padding={"10px"}>
