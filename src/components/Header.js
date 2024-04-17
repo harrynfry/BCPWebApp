@@ -16,7 +16,7 @@ function Header(){
         
         <Box display="flex" justifyContent="center" flexDirection="column" alignItems="center" margin={1}>
           <Typography marginTop={1} marginLeft={2} marginRight={2} marginBottom={1} textAlign={'center'}>
-            Please complete this survey, after interacting with the app.
+            After interacting with the app, please take the time to complete this survey.
           </Typography>
           <Button variant='outlined' component="a" href='https://app.onlinesurveys.jisc.ac.uk/s/solent/civic-engagement-and-democratic-awareness-in-bournemouth-christ' target="_blank">
             Survey
