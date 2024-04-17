@@ -1,5 +1,5 @@
 import FeedItem from './FeedItem';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, Link } from '@mui/material';
 
 
 function Feed({ data }) {
@@ -13,7 +13,14 @@ function Feed({ data }) {
           <Box sx={{margin: 1, borderRadius: 2, background: '#ffff99', boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.3)'}}>
             <Typography variant='h6' color={'#4a1657'}>
               Next election: Police and Crime Commissioner (2 May 2024)
+              <Typography variant='h6'>
+                <Link href="https://www.bcpcouncil.gov.uk/councillors-committees-and-elections/elections-and-voting/register-to-vote" target="_blank" rel="noopener">
+                  Register to vote.
+                </Link>
+              </Typography>
+              
             </Typography>
+
           </Box>
           <Box sx={{margin: 1, borderRadius: 2, background: 'white', boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.3)'}}>
             <Typography variant='h6' color={'#4a1657'}>
