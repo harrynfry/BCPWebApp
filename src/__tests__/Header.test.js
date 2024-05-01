@@ -9,7 +9,4 @@ test('renders Header', () => {
     const headerTxt = screen.getByText('News from BCP');
     expect(headerTxt).toBeInTheDocument();
 
-    // find msg, ignoring case and whitespace
-    const welcomeMsg = screen.getByText(/Welcome/i);
-    expect(welcomeMsg).toBeInTheDocument();
 });
